@@ -22,7 +22,8 @@ func NewPosgresqlDatabase(dbHost string, dbPort string, dbUser string, dbPass st
 		log.Fatal(err)
 
 	}
-
+	
+	dbConn.Exec("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";")
 	dbConn.Migrator().DropTable(&domain.Business{}, &domain.Category{})
 	dbConn.AutoMigrate(&domain.Business{}, &domain.Category{})
 	seeder.Seed(dbConn)

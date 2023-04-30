@@ -8,15 +8,15 @@ import (
 	"gorm.io/gorm"
 )
 
-type mysqlBusinessRepository struct {
+type posgresqlBusinessRepository struct {
 	conn *gorm.DB
 }
 
-func NewMysqlBusinessRepository(conn *gorm.DB) domain.BusinessRepository {
-	return &mysqlBusinessRepository{conn}
+func NewPosgreslBusinessRepository(conn *gorm.DB) domain.BusinessRepository {
+	return &posgresqlBusinessRepository{conn}
 }
 
-func (m mysqlBusinessRepository) Find(ctx context.Context, term string, sortBy string, limit int, offset int, latitude float64, longitude float64) ([]domain.Business, error) {
+func (m posgresqlBusinessRepository) Find(ctx context.Context, term string, sortBy string, limit int, offset int, latitude float64, longitude float64) ([]domain.Business, error) {
 	var businesses []domain.Business
 	query := m.conn.Model(&domain.Business{})
 
@@ -57,15 +57,15 @@ func (m mysqlBusinessRepository) Find(ctx context.Context, term string, sortBy s
 
 }
 
-func (m mysqlBusinessRepository) Store(ctx context.Context, bs *domain.Business) error {
+func (m posgresqlBusinessRepository) Store(ctx context.Context, bs *domain.Business) error {
 	return m.conn.Create(&bs).Error
 }
 
-func (m mysqlBusinessRepository) Update(ctx context.Context, bs *domain.Business, id uuid.UUID) error {
+func (m posgresqlBusinessRepository) Update(ctx context.Context, bs *domain.Business, id uuid.UUID) error {
 	return m.conn.Where("id", id).Updates(&bs).Error
 }
 
-func (m mysqlBusinessRepository) Delete(ctx context.Context, id uuid.UUID) error {
+func (m posgresqlBusinessRepository) Delete(ctx context.Context, id uuid.UUID) error {
 	//INFO: HARD DELETE
 	return m.conn.Unscoped().Delete(&domain.Business{}, id).Error
 

@@ -40,7 +40,7 @@ func main() {
 
 	// Init Repository
 
-	br := _businessRepo.NewMysqlBusinessRepository(dbConn)
+	br := _businessRepo.NewPosgreslBusinessRepository(dbConn)
 
 	// Init Usecase
 	bu := _businessUsecase.NewBusinessUsecase(br, timeoutContext)
